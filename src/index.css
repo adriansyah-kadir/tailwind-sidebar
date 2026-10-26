@@ -1,0 +1,136 @@
+@utility sidebar {
+  @apply data-[open=false]:sidebar-hidden;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  flex-direction: var(--sidebar-dir, row);
+
+  /* static mode: hiding collapses the aside's size (no slide) */
+  --sidebar-pos: static;
+  --sidebar-z: initial;
+  --sidebar-collapse-w: var(--sidebar-collapse-to-w, 0);
+  --sidebar-collapse-h: var(--sidebar-collapse-to-h, 100%);
+  --sidebar-slide: initial;
+
+  & > aside {
+    display: flex;
+    justify-content: end;
+    position: var(--sidebar-pos, static);
+    z-index: var(--sidebar-z, auto);
+    top: var(--sidebar-t, 0);
+    right: var(--sidebar-r, auto);
+    bottom: var(--sidebar-b, auto);
+    left: var(--sidebar-l, 0);
+    order: var(--sidebar-aside-order, -999);
+    flex-shrink: 0;
+    overflow: auto;
+    width: var(--sidebar-hidden-w, var(--sidebar-w, var(--sidebar-size, 16rem)));
+    height: var(--sidebar-hidden-h, var(--sidebar-h, 100%));
+    transform: var(--sidebar-hidden-x, none);
+    visibility: var(--sidebar-hidden-vis, visible);
+    transition:
+      width 200ms ease,
+      height 200ms ease,
+      transform 200ms ease,
+      visibility 0s linear var(--sidebar-hidden-delay, 0s);
+  }
+
+  & > main {
+    order: var(--sidebar-main-order, 999);
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 0%;
+    overflow: auto;
+  }
+}
+
+/* overlay mode: aside floats over main, hiding slides it out */
+@utility sidebar-overlay {
+  @apply sidebar data-[open=false]:sidebar-hidden;
+
+  --sidebar-pos: absolute;
+  --sidebar-z: 10;
+  --sidebar-collapse-w: initial;
+  --sidebar-collapse-h: initial;
+  --sidebar-slide: var(--sidebar-slide-to, translateX(-100%));
+}
+
+@utility sidebar-left {
+  --sidebar-dir: row;
+  --sidebar-aside-order: -999;
+  --sidebar-main-order: 999;
+  --sidebar-w: var(--sidebar-size, 16rem);
+  --sidebar-h: 100%;
+  --sidebar-t: 0;
+  --sidebar-r: auto;
+  --sidebar-b: auto;
+  --sidebar-l: 0;
+  --sidebar-collapse-to-w: 0;
+  --sidebar-collapse-to-h: 100%;
+  --sidebar-slide-to: translateX(-100%);
+}
+
+@utility sidebar-right {
+  --sidebar-dir: row;
+  --sidebar-aside-order: 999;
+  --sidebar-main-order: -999;
+  --sidebar-w: var(--sidebar-size, 16rem);
+  --sidebar-h: 100%;
+  --sidebar-t: 0;
+  --sidebar-r: 0;
+  --sidebar-b: auto;
+  --sidebar-l: auto;
+  --sidebar-collapse-to-w: 0;
+  --sidebar-collapse-to-h: 100%;
+  --sidebar-slide-to: translateX(100%);
+}
+
+@utility sidebar-top {
+  --sidebar-dir: column;
+  --sidebar-aside-order: -999;
+  --sidebar-main-order: 999;
+  --sidebar-w: 100%;
+  --sidebar-h: var(--sidebar-size, 16rem);
+  --sidebar-t: 0;
+  --sidebar-r: auto;
+  --sidebar-b: auto;
+  --sidebar-l: 0;
+  --sidebar-collapse-to-w: 100%;
+  --sidebar-collapse-to-h: 0;
+  --sidebar-slide-to: translateY(-100%);
+}
+
+@utility sidebar-bottom {
+  --sidebar-dir: column;
+  --sidebar-aside-order: 999;
+  --sidebar-main-order: -999;
+  --sidebar-w: 100%;
+  --sidebar-h: var(--sidebar-size, 16rem);
+  --sidebar-t: auto;
+  --sidebar-r: auto;
+  --sidebar-b: 0;
+  --sidebar-l: 0;
+  --sidebar-collapse-to-w: 100%;
+  --sidebar-collapse-to-h: 0;
+  --sidebar-slide-to: translateY(100%);
+}
+
+@utility sidebar-hidden {
+  &:not([data-open="true"]) {
+    --sidebar-hidden-w: var(--sidebar-collapse-w);
+    --sidebar-hidden-h: var(--sidebar-collapse-h);
+    --sidebar-hidden-x: var(--sidebar-slide);
+    --sidebar-hidden-vis: hidden;
+    --sidebar-hidden-delay: 200ms;
+  }
+}
+
+@utility sidebar-open {
+  &:not([data-open="false"]) {
+    --sidebar-hidden-w: var(--sidebar-w);
+    --sidebar-hidden-h: var(--sidebar-h);
+    --sidebar-hidden-x: 0;
+    --sidebar-hidden-vis: visible;
+    --sidebar-hidden-delay: 0ms;
+  }
+}
